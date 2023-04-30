@@ -91,9 +91,8 @@ def act_on_camera_recognition(camera_recognition_objects):
             y_size = size_on_img[1]
 
             if x_size > 400 or y_size > 400:
-                choice = random.choice([LEFT, RIGHT])
-                print("Ball is too close, turning " + choice)
-                rotate_by_angle(180, choice)
+                print("Ball is too close, turning right")
+                rotate_by_angle(180, RIGHT)
 
 def turn_if_ball_is_in_front():
     camera_recognition_objects = camera.getRecognitionObjects()
