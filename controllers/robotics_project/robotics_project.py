@@ -1,5 +1,4 @@
 """robotics_project controller."""
-import random
 from controller import Robot, Motor, DistanceSensor, Camera
 
 # create the Robot instance.
