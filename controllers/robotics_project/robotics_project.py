@@ -8,7 +8,7 @@ robot = Robot()
 # get the time step of the current world.
 TIMESTEP = 32
 DS_THRESHOLD = 90
-ANGULAR_SPEED = 500
+ANGULAR_SPEED = 500 # Tried to approximate this, but isn't very accurate
 MAX_SPEED = 6.28
 INFINITY = float('inf')
 LEFT = "left"
@@ -55,8 +55,6 @@ def calculate_rotation_time(angle):
     return abs(angle) / ANGULAR_SPEED
 
 def rotate_by_angle(angle, direction):
-    
-
     duration = calculate_rotation_time(angle)
     start_time = robot.getTime()
     while robot.getTime() < start_time + duration:
@@ -93,7 +91,9 @@ def act_on_camera_recognition(camera_recognition_objects):
             y_size = size_on_img[1]
 
             if x_size > 400 or y_size > 400:
-                rotate_by_angle(180, random.choice([LEFT, RIGHT]))
+                choice = random.choice([LEFT, RIGHT])
+                print("Ball is too close, turning " + choice)
+                rotate_by_angle(180, choice)
 
 def turn_if_ball_is_in_front():
     camera_recognition_objects = camera.getRecognitionObjects()
@@ -112,21 +112,14 @@ while robot.step(TIMESTEP) != -1:
     # Sensors to the right
     ds_0_is_active = get_sensor_condition(ds_0)
     ds_1_is_active = get_sensor_condition(ds_1)
-
-    camera_recognition_objects = camera.getRecognitionObjects()
     
-    if(len(camera_recognition_objects) > 0):
-        print(camera_recognition_objects[0].getPositionOnImage())
-        print(camera_recognition_objects[0].getPosition()[0])
-        print(camera_recognition_objects[0].getId())
-        print(camera_recognition_objects[0].getSizeOnImage()[0], " ", camera_recognition_objects[0].getSizeOnImage()[1])
-        print(camera_recognition_objects[0].getModel())
-
     if (ds_6_is_active or ds_7_is_active):
         # There's an obstacle to the left, so turn right
+        print("Obstacle to the left, turning right")
         rotate_by_angle(90, RIGHT)
     elif (ds_0_is_active or ds_1_is_active):
         # There's an obstacle to the right, so turn left
+        print("Obstacle to the right, turning left")
         rotate_by_angle(90, LEFT)
     else:
         # No obstacles, so move forward
